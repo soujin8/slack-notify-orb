@@ -1,0 +1,44 @@
+parameters:
+  event:
+    description: |
+      In what event should this message send? Options: ["fail", "pass", "always"]
+    type: enum
+    enum: ["fail", "pass", "always"]
+    default: "always"
+  channel:
+    description: |
+      Select which channel in which to post to. Channel name or ID will work. You may include a comma separated list of channels if you wish to post to multiple channels at once. Set the "SLACK_DEFAULT_CHANNEL" environment variable for the default channel.
+    type: string
+    default: $SLACK_DEFAULT_CHANNEL
+  slack_name_mappings:
+    type: string
+    default: ""
+  deploy_flag:
+    type: boolean
+    default: false
+
+steps:
+  - run:
+      when: on_fail
+      name: Slack - Detecting Job Status (FAIL)
+      command: |
+        echo 'export CCI_STATUS="fail"' > /tmp/SLACK_JOB_STATUS
+  - run:
+      when: on_success
+      name: Slack - Detecting Job Status (PASS)
+      command: |
+        echo 'export CCI_STATUS="pass"' > /tmp/SLACK_JOB_STATUS
+  - run:
+      when: always
+      name: Slack - Sending Notification
+      environment:
+        SLACK_PARAM_EVENT: "<<parameters.event>>"
+        SLACK_PARAM_CHANNEL: "<<parameters.channel>>"
+        SLACK_PARAM_DEBUG: true
+        build_success: "<<include(message_templates/build_success.json)>>"
+        build_failed: "<<include(message_templates/build_failed.json)>>"
+        deploy_success: "<<include(message_templates/deploy_success.json)>>"
+        deploy_failed: "<<include(message_templates/deploy_failed.json)>>"
+        slack_name_mappings: "<<parameters.slack_name_mappings>>"
+        DEPLOY_FLAG: "<<parameters.deploy_flag>>"
+      command: <<include(scripts/notify.sh)>>

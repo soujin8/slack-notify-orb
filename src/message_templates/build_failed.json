@@ -1,0 +1,61 @@
+{
+  "text": "CircleCI build failed.",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Build Failed. :red_circle:",
+        "emoji": true
+      }
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Project*: \n$CIRCLE_PROJECT_REPONAME"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Branch*: \n$CIRCLE_BRANCH"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Author*: \n$CIRCLE_USERNAME"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Commit Message*: \n$COMMIT_MESSAGE"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Mentions*: \n$SLACK_MENTION"
+        }
+      ]
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "View Job"
+          },
+          "url": "${CIRCLE_BUILD_URL}"
+        }
+      ]
+    }
+  ]
+}

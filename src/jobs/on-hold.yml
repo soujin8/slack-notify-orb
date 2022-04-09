@@ -1,0 +1,32 @@
+parameters:
+  event:
+    description: |
+      In what event should this message send? Options: ["fail", "pass", "always"]
+    type: enum
+    enum: ["fail", "pass", "always"]
+    default: "always"
+  channel:
+    description: |
+      Select which channel in which to post to. Channel name or ID will work. You may include a comma separated list of channels if you wish to post to multiple channels at once. Set the "SLACK_DEFAULT_CHANNEL" environment variable for the default channel.
+    type: string
+    default: $SLACK_DEFAULT_CHANNEL
+  slack_name_mappings:
+    type: string
+    default: ""
+  deploy_flag:
+    type: boolean
+    default: false
+
+working_directory: ~/$(CIRCLE_PROJECT_REPONAME)
+
+docker:
+  - image: cimg/base:stable
+resource_class: small
+
+steps:
+  - checkout
+  - notify:
+      event: <<parameters.event>>
+      channel: <<parameters.channel>>
+      slack_name_mappings: <<parameters.slack_name_mappings>>
+      deploy_flag: <<parameters.deploy_flag>>
