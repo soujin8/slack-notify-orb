@@ -54,10 +54,10 @@ BuildMessageBody() {
   else echo "A template wasn't provided nor is possible to infer it based on the job status. The job status: '$CCI_STATUS' is unexpected. The deploy flag: '$DEPLOY_FLAG'"; exit 1
   fi
 
-  if [ $CIRCLE_BRANCH = "develop" ]; then
-    DEPLOY_DESTINATION="Staging"
-  else
+  if [ $CIRCLE_BRANCH = "master" ] || [ $CIRCLE_BRANCH = "main" ]; then
     DEPLOY_DESTINATION="Production"
+  else
+    DEPLOY_DESTINATION="Staging"
   fi
 
   JSON_LENGTH=`echo $slack_name_mappings | jq length`
