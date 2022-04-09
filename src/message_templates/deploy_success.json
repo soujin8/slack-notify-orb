@@ -30,6 +30,15 @@
 				}
 			]
 		},
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Mentions*: \n$SLACK_MENTION"
+        }
+      ]
+    },
 		{
 			"type": "actions",
 			"elements": [
