@@ -47,11 +47,11 @@ BuildMessageBody() {
     #   if none is supplied, check for a pre-selected template value.
     #   If none, error.
 
-  if [ $DEPLOY_FLAG = true ] && [ "$CCI_STATUS" = "pass" ]; then TEMPLATE="\$deploy_success"
-  elif [ $DEPLOY_FLAG = true ] && [ "$CCI_STATUS" = "fail" ]; then TEMPLATE="\$deploy_failed"
-  elif [ "$CCI_STATUS" = "pass" ]; then TEMPLATE="\$build_success"
-  elif [ "$CCI_STATUS" = "fail" ]; then TEMPLATE="\$build_failed"
-  else echo "A template wasn't provided nor is possible to infer it based on the job status. The job status: '$CCI_STATUS' is unexpected."; exit 1
+  if [ $DEPLOY_FLAG = 1 ] && [ "$CCI_STATUS" = "pass" ]; then TEMPLATE="\$deploy_success"
+  elif [ $DEPLOY_FLAG = 1 ] && [ "$CCI_STATUS" = "fail" ]; then TEMPLATE="\$deploy_failed"
+  elif [ $DEPLOY_FLAG = 0 ] && [ "$CCI_STATUS" = "pass" ]; then TEMPLATE="\$build_success"
+  elif [ $DEPLOY_FLAG = 0 ] && [ "$CCI_STATUS" = "fail" ]; then TEMPLATE="\$build_failed"
+  else echo "A template wasn't provided nor is possible to infer it based on the job status. The job status: '$CCI_STATUS' is unexpected. The deploy flag: '$DEPLOY_FLAG'"; exit 1
   fi
 
   if [ $CIRCLE_BRANCH = "develop" ]; then
